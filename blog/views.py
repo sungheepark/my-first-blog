@@ -1,6 +1,8 @@
 from django.shortcuts import render,get_object_or_404
 from django.utils import timezone
 from .models import Post
+from .forms import PostForm
+from django.shortcuts import redirect
 
 #뷰(view)는 모델과 템플릿을 연결하는 역할을 함.
 #post_list 를 뷰에서 보여주고 이를 템플릿에 전달하기 위해서는, 모델을 가져와야 합니다.
@@ -16,5 +18,33 @@ def post_list(request):
  # {'posts': posts} 이렇게 작성할거에요.  : 이전에 문자열이 와야하고, 작은 따옴표 '' 를 양쪽에 붙이는 것을 잊지 마세요.
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    #Post.objects.get(pk=pk) : 블로그 게시글 한 개만 보려면 Post.objects.get(pk=pk) 쿼리셋(queryset) 생성하면됨.
+    post = get_object_or_404(Post, pk=pk) #but, Post를 찾지 못하면, 오류 페이지( 페이지 찾을 수 없음 404 : Page Not Found 404) 를 보여줄
     return render(request, 'blog/post_detail.html', {'post': post})
+
+def post_new(request):
+    if request.method == "POST":   #만약  method 가  POST 라면, 폼에서 받은 데이터를  PostForm 으로 넘겨줌
+        form = PostForm(request.POST)
+        if form.is_valid():   #품에 들어있는 값들이 올바른지를 확인해야합니다
+            post = form.save(commit=False) #commit=False :넘겨진 데이터를 바로 Post모델에 저장하지는 말라는 뜻.작성자를 추가한 다음 저장해야 하니까요
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save() # post.save() 는 변경사항(작성자 정보를 포함)을 유지할 것이고 새 블로그 글이 만들어질 거에요
+            return redirect('post_detail', pk=post.pk) #새 블로그 글을 작성한 다음에  post_detail 페이지로 이동할 수 있으면 좋겠죠
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+def post_edit(request, pk): #url로부터 추가로  pk  매개변수를 받아서 처리합니다
+    post = get_object_or_404(Post, pk=pk) #수정하고자 하는 글의  Post  모델  인스턴스(instance) 로 가져옵니다
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
