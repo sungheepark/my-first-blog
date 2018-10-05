@@ -1,0 +1,30 @@
+{% load static %}
+<html>
+    <head>
+        <title>Sunghee's blog</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    </head>
+    <!--템플릿 태그(template tags) : HTML에  파이썬 코드를 바로 넣을 수 없음. 템플릿 태그는 파이썬을 HTML로 바꿔주어, 빠르고 쉽게 동적인 웹 사이트를 만들 수 있음
+    - views.py에서 글 목록이 들어있는 posts 변수를 템플릿에 넘겨주음.
+    - 넘겨진 posts 변수를 받아 HTML에 나도록 장고 템플릿 안에 있는 값을 출력하려면, 변수 이름 안에 중괄호를 넣어 표시해야 함 : {{ posts }}
+    - django template에서는 for loop을 '{%  %'} 로 써야함.
+    - linebreaksbr 같이 파이프 문자(|)도 사용.이건 블로그 글 텍스트에서 행이 바뀌면 문단으로 변환하도록 하라는 의미입니다. 행바뀜을 문단으로 변환하는 필터를 적용한다는 표현을 쓰기도 함.
+   -->
+    <body>
+        <div class="page-header">
+            <h1><a href="/">Django Girls Blog</a></h1>
+        </div>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
