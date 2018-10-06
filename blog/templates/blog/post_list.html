@@ -8,6 +8,10 @@
             </div>
             <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
             <p>{{ post.text|linebreaksbr }}</p>
+<!--
+ |linebreaksbr : 파이프 문자(|), 블로그 글 텍스트에서 행이 바뀌면 문단으로 변환하도록 하라는 의미입니다.
+  행바뀜을 문단으로 변환하는 필터를 적용한다는 표현을 쓰기도 합니다.
+-->
         </div>
     {% endfor %}
 {% endblock %}

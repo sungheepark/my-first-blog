@@ -7,7 +7,8 @@
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     </head>
-    <!--템플릿 태그(template tags) : HTML에  파이썬 코드를 바로 넣을 수 없음. 템플릿 태그는 파이썬을 HTML로 바꿔주어, 빠르고 쉽게 동적인 웹 사이트를 만들 수 있음
+    <!--템플릿 태그(template tags) : HTML에  파이썬 코드를 바로 넣을 수 없음.
+        템플릿 태그는 파이썬을 HTML로 바꿔주어, 빠르고 쉽게 동적인 웹 사이트를 만들 수 있음
     - views.py에서 글 목록이 들어있는 posts 변수를 템플릿에 넘겨주음.
     - 넘겨진 posts 변수를 받아 HTML에 나도록 장고 템플릿 안에 있는 값을 출력하려면, 변수 이름 안에 중괄호를 넣어 표시해야 함 : {{ posts }}
     - django template에서는 for loop을 '{%  %'} 로 써야함.
