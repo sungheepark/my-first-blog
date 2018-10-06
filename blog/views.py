@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,get_object_or_404
 from django.utils import timezone
 from .models import Post
@@ -31,6 +32,8 @@ def post_detail(request, pk):
 # 이제 view 에서 두 상황으로 나누어 처리해볼게요.
 # •첫 번째: 처음 페이지에 접속했을 때입니다. 당연히 우리가 새 글을 쓸 수 있게 폼이 비어있어야겠죠.
 # •두 번째: 폼에 입력된 데이터를 view 페이지로 가지고 올 때입니다. 여기서 조건문을 추가시켜야 해요. ( if 를 사용하세요)
+
+@login_required(login_url="admin:login") #파이썬의 장식자 기능. login이 안되어 잇으면 login창으로 이동했다가 다시 넘어옴
 def post_new(request):
     if request.method == "POST":   #만약  method 가  POST 라면, 폼에서 받은 데이터를  PostForm 으로 넘겨줌
         form = PostForm(request.POST)
@@ -44,6 +47,7 @@ def post_new(request):
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
 
+@login_required(login_url="admin:login") #파이썬의 장식자 기능. login이 안되어 잇으면 login창으로 이동했다가 다시 넘어옴
 def post_edit(request, pk): #url로부터 추가로  pk  매개변수를 받아서 처리합니다
     post = get_object_or_404(Post, pk=pk) #수정하고자 하는 글의  Post  모델  인스턴스(instance) 로 가져옵니다
     if request.method == "POST":
