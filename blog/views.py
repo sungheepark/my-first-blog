@@ -22,6 +22,15 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk) #but, Post를 찾지 못하면, 오류 페이지( 페이지 찾을 수 없음 404 : Page Not Found 404) 를 보여줄
     return render(request, 'blog/post_detail.html', {'post': post})
 
+# 폼을 제출할 때, 같은 뷰를 불러옵니다. 이때  request 에는 우리가 입력했던 데이터들을 가지고 있는데,
+# request.POST 가 이 데이터를 가지고 있습니다. ( POST 는 글 데이터를 "등록하는(posting)"하는 것을 의미합니다.
+# 블로그"글"을 의미하는 "post"와 관련이 없어요) HTML에서 <form> 정의에  method="POST" 라는 속성이 있던 것이 기억나나요?
+# 이렇게 POST로 넘겨진 폼 필드의 값들은 이제  request.POST 에 저장됩니다.
+# POST 로 된 값을 다른 거로 바꾸면 안 돼요.  method  속성의 값으로 넣을 수 있는 유효한 값 중에  GET 같은 것도 있지만,
+# post와 어떤 차이점이 있는지 등에 대해서 다루기에는 너무 길어질 것 같아 생략할게요)
+# 이제 view 에서 두 상황으로 나누어 처리해볼게요.
+# •첫 번째: 처음 페이지에 접속했을 때입니다. 당연히 우리가 새 글을 쓸 수 있게 폼이 비어있어야겠죠.
+# •두 번째: 폼에 입력된 데이터를 view 페이지로 가지고 올 때입니다. 여기서 조건문을 추가시켜야 해요. ( if 를 사용하세요)
 def post_new(request):
     if request.method == "POST":   #만약  method 가  POST 라면, 폼에서 받은 데이터를  PostForm 으로 넘겨줌
         form = PostForm(request.POST)
